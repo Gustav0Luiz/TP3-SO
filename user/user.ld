@@ -2,7 +2,7 @@ OUTPUT_ARCH( "riscv" )
 
 SECTIONS
 {
- . = 0x0;
+ . = 0x1000; /* modificamos o endereço de inicio do programa */
  
   .text : {
     *(.text .text.*)

@@ -224,6 +224,14 @@ uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz, int xperm)
     return oldsz;
 
   oldsz = PGROUNDUP(oldsz);
+
+  //MODIFICAÇÃO
+  // A primeira pagina virtual deve permanecer sem mapeamento.
+  if (oldsz < PGSIZE)
+    oldsz = PGSIZE;
+  
+    
+
   for (a = oldsz; a < newsz; a += PGSIZE) {
     mem = kalloc();
     if (mem == 0) {
@@ -456,6 +464,11 @@ vmfault(pagetable_t pagetable, uint64 va, int read)
 {
   uint64 mem;
   struct proc *p = myproc();
+
+  // MODIFICAÇÃO
+  // A primeira pagina virtual nunca pode ser criada.
+  if (va < PGSIZE)
+    return 0;
 
   if (va >= p->sz)
     return 0;
